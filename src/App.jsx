@@ -7,12 +7,17 @@ import {
 import RootLayout from "./components/layout/RootLayout";
 import HomeIndex from "./pages/home/HomeIndex";
 import ShopIndex from "./pages/shop/ShopIndex";
+import ErrorPages from "./components/common/ErrorPages";
 
 const routes = createRoutesFromElements(
-  <Route element={<RootLayout />}>
-    <Route index element={<HomeIndex />} />
-    <Route path="/shop" element={<ShopIndex />} />
-  </Route>,
+  <>
+    <Route element={<RootLayout />}>
+      <Route index element={<HomeIndex />} />
+      <Route path="/shop" element={<ShopIndex />} />
+    </Route>
+    ,
+    <Route path="*" element={<ErrorPages />} />
+  </>,
 );
 
 const router = createBrowserRouter(routes);

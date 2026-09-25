@@ -1,9 +1,7 @@
-
+import Banner from "../../components/pages/home/Banner";
 
 const HomeIndex = () => {
-  return (
-    <div>HomeIndex</div>
-  )
-}
+  return <Banner />;
+};
 
-export default HomeIndex
+export default HomeIndex;
