@@ -6,11 +6,14 @@ import NavData from "../../Data/NavData";
 import { HiMenuAlt2 } from "react-icons/hi";
 import { IoSearchSharp } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IoCaretDown } from "react-icons/io5";
 import { FaShoppingCart } from "react-icons/fa";
 import Catagory from "../../Data/Catagory";
 import UserInfo from "../../Data/UserInfo";
+import { IoCloseSharp } from "react-icons/io5";
+import { MdOutlineLogin } from "react-icons/md";
+import userLoginData from "../../Data/LoginData";
 
 const Navbar = () => {
   const [searchText, setSearchText] = useState("");
@@ -20,7 +23,24 @@ const Navbar = () => {
   const location = useLocation();
   const pathname = location.pathname;
   const [showDropdown, setShowDropdown] = useState(false);
-  const [showDropdownTwo, setShowDropdownTwo] = useState(false);
+  const [profileShowDropdown, setProfileShowDropdown] = useState(false);
+  const profileDropDownRef = useRef(null);
+
+  const dropDownRef = useRef(null);
+  const [isLogin, setIsLogin] = useState(true);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropDownRef.current && !dropDownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showDropdown]);
 
   return (
     <>
@@ -57,11 +77,18 @@ const Navbar = () => {
         <Container>
           <div className="navMenu py-6.25 flex justify-between">
             <div className="flex items-center gap-2.5 pt-4 pb-4">
-              <div className="relative">
-                <HiMenuAlt2
-                  onClick={() => setShowDropdown(!showDropdown)}
-                  className="cursor-pointer text-[22px] "
-                />
+              <div ref={dropDownRef} className="relative">
+                {showDropdown ? (
+                  <IoCloseSharp
+                    onClick={() => setShowDropdown(!showDropdown)}
+                    className="cursor-pointer text-[22px] "
+                  />
+                ) : (
+                  <HiMenuAlt2
+                    onClick={() => setShowDropdown(!showDropdown)}
+                    className="cursor-pointer text-[22px] "
+                  />
+                )}
                 <div
                   className={`bg-blackTwo text-white text-2xl absolute w-100 shadow-2xl left-0 -bottom-2 transition-all duration-600 ${
                     showDropdown
@@ -98,34 +125,41 @@ const Navbar = () => {
                 <IoSearchSharp className=" absolute top-1/2 right-5 -translate-y-1/2 text-[22px]" />
               </NavLink>
             </div>
-            <div className="py-4 flex gap-10 items-center text-2xl cursor-auto">
-              <div className="flex gap-2.5 relative">
-                <FaUser
-                  onClick={() => setShowDropdownTwo(!showDropdownTwo)}
-                  className="cursor-pointer text-[22px] "
-                />
 
-                <div
-                  className={`bg-blackTwo text-white text-2xl absolute w-50 shadow-2xl letf-0 -bottom-2 transition-all duration-600 ${
-                    showDropdownTwo
-                      ? "opacity-100 visible translate-y-full"
-                      : "opacity-0 invisible translate-y-full"
-                  }`}
-                >
-                  <ul>
-                    {UserInfo.map((item, index) => (
-                      <li
-                        className="w-full px-6 cursor-pointer py-3 border-b last:border-b-0  hover:bg-white hover:w-full hover:text-black transition-all duration-500"
-                        key={index}
-                      >
-                        {item.label}
-                      </li>
-                    ))}
-                  </ul>
+            <div className="py-4 flex gap-10 items-center text-2xl cursor-auto relative">
+              {isLogin ? (
+                <div>
+                  <div
+                    onClick={() => setProfileShowDropdown(!profileShowDropdown)}
+                    className="flex gap-2.5"
+                  >
+                    <FaUser className="cursor-pointer text-[22px] " />
+                    <IoCaretDown />
+                  </div>
+
+                  {profileShowDropdown && (
+                    <div className="w-34 bg-white absolute -bottom-3 left-0 translate-y-full shadow">
+                      {userLoginData.map((item, index) => (
+                        <NavLink
+                          key={item.id}
+                          to={item.url}
+                          className="py-5 px-3 block cursor-pointer border-b last:border-b-0"
+                        >
+                          {item.label}
+                        </NavLink>
+                      ))}
+                    </div>
+                  )}
                 </div>
-                <IoCaretDown />
-              </div>
-              <FaShoppingCart />
+              ) : (
+                <NavLink to="/login">
+                  <MdOutlineLogin />
+                </NavLink>
+              )}
+
+              <NavLink to="/cart">
+                <FaShoppingCart />
+              </NavLink>
             </div>
           </div>
         </Container>
