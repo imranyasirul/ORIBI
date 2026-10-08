@@ -12,6 +12,7 @@ import CartIndex from "./pages/cart/CartIndex";
 import LoginPage from "./pages/login/Login";
 import Registration from "./pages/registration/Registration";
 import MyAccount from "./pages/myAccount/MyAccount";
+import ContactIndex from "./pages/contact/ContactIndex";
 
 const routes = createRoutesFromElements(
   <>
@@ -22,7 +23,7 @@ const routes = createRoutesFromElements(
       <Route path="/login" element={<LoginPage />} />
       <Route path="/registration" element={<Registration />} />
       <Route path="/dashboard" element={<MyAccount />} />
-      
+      <Route path="/contacts" element={<ContactIndex />} />
     </Route>
     ,
     <Route path="*" element={<ErrorPages />} />
