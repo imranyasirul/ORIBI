@@ -1,6 +1,5 @@
 import React from "react";
 
-
 import Container from "../../common/Container";
 import BreadCrump from "../../common/BreadCrump";
 
@@ -29,7 +28,6 @@ const ContactForm = () => {
                 className="border-b border-gray-300 py-2 outline-none focus:border-black text-sm bg-transparent"
               />
             </div>
-
             <div className="flex flex-col">
               <label className="text-sm font-bold mb-1">Email</label>
               <input
